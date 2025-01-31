@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bill Generator</title>
+
+    <!-- Import html2canvas & jsPDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            text-align: center;
+        }
+        .container {
+            width: 600px;
+            margin: auto;
+        }
+        input, textarea {
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 8px;
+        }
+        #bill {
+            width: 600px;
+            border: 1px solid #ccc;
+            padding: 15px;
+            text-align: left;
+            background-color: #f9f9f9;
+        }
+        .header {
+            text-align: center;
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .subheader {
+            text-align: center;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        .section {
+            margin-bottom: 10px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: center;
+        }
+        .total {
+            text-align: right;
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        button {
+            margin-top: 10px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Bill Generator</h2>
+
+    <form id="billForm">
+        <input type="date" id="startDate" required>
+        <input type="date" id="endDate" required>
+        <input type="text" id="customerName" placeholder="Customer Name" required>
+        <input type="text" id="customerPhone" placeholder="Customer Phone Number" required>
+        <textarea id="customerAddress" placeholder="Customer Address" required></textarea>
+        <input type="text" id="description" placeholder="Room Description" required>
+        <input type="number" id="price" placeholder="Price per Night" required>
+
+        <button type="button" onclick="generateBill()">Generate Bill</button>
+        <button type="button" onclick="downloadPDF()">Download PDF</button>
+    </form>
+
+    <!-- Bill Preview Section -->
+    <div id="bill">
+        <div class="header">Himachal Guest House</div>
+        <div class="subheader">
+            <strong>Address: VPO Khera, Teh. Nalagarh, Solan, HP</strong> <br>
+            <strong>Phone: +91-9418450853</strong>
+        </div>
+        <hr>
+        <div class="section">
+            <strong>Invoice #</strong> <span id="billInvoice"></span><br>
+            <strong>Date:</strong> <span id="billDates"></span>
+        </div>
+        <div class="section">
+            <strong>Billed To:</strong> <span id="billCustomer"></span><br>
+            <strong>Phone:</strong> <span id="billCustomerPhone"></span><br>
+            <strong>Address:</strong> <span id="billCustomerAddress"></span>
+        </div>
+        <table>
+            <tr>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Days</th>
+                <th>Total</th>
+            </tr>
+            <tr>
+                <td id="billDescription"></td>
+                <td id="billPrice"></td>
+                <td id="billDays"></td>
+                <td id="billTotal"></td>
+            </tr>
+        </table>
+        <div class="total">Total: ₹<span id="billGrandTotal"></span> (Including all taxes)</div>
+        <div style="text-align: center; margin-top: 10px;">THIS IS A SYSTEM GENERATED BILL.</div>
+    </div>
+</div>
+
+<script>
+    let billCount = 1; // Track daily bills
+
+    function generateInvoiceNumber() {
+        let today = new Date();
+        let year = today.getFullYear();
+        let month = String(today.getMonth() + 1).padStart(2, '0');
+        let date = String(today.getDate()).padStart(2, '0');
+        let invoiceNumber = `${year}${month}${date}${String(billCount).padStart(2, '0')}`;
+        billCount++; // Increment for the next bill
+        return invoiceNumber;
+    }
+
+    function calculateDays(startDate, endDate) {
+        let start = new Date(startDate);
+        let end = new Date(endDate);
+        let diffTime = end - start;
+        let diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); // Convert milliseconds to days
+        return diffDays > 0 ? diffDays : 1; // Minimum 1 day stay
+    }
+
+    function generateBill() {
+        let startDate = document.getElementById("startDate").value;
+        let endDate = document.getElementById("endDate").value;
+        let customerName = document.getElementById("customerName").value;
+        let customerPhone = document.getElementById("customerPhone").value;
+        let customerAddress = document.getElementById("customerAddress").value;
+        let description = document.getElementById("description").value;
+        let price = parseFloat(document.getElementById("price").value);
+
+        if (!startDate || !endDate || !customerName || !customerPhone || !customerAddress || !description || isNaN(price) || price <= 0) {
+            alert("Please fill all fields correctly.");
+            return;
+        }
+
+        let days = calculateDays(startDate, endDate);
+        let total = price * days;
+        let invoiceNumber = generateInvoiceNumber();
+
+        document.getElementById("billInvoice").innerText = invoiceNumber;
+        document.getElementById("billDates").innerText = `${startDate} to ${endDate}`;
+        document.getElementById("billCustomer").innerText = customerName;
+        document.getElementById("billCustomerPhone").innerText = customerPhone;
+        document.getElementById("billCustomerAddress").innerText = customerAddress;
+        document.getElementById("billDescription").innerText = description;
+        document.getElementById("billPrice").innerText = "₹" + price;
+        document.getElementById("billDays").innerText = days;
+        document.getElementById("billTotal").innerText = "₹" + total;
+        document.getElementById("billGrandTotal").innerText = total;
+    }
+
+    function downloadPDF() {
+        const { jsPDF } = window.jspdf;
+        let element = document.getElementById("bill");
+
+        html2canvas(element, { scale: 2 }).then(canvas => {
+            let imgData = canvas.toDataURL("image/png");
+            let pdf = new jsPDF("p", "mm", "a4");
+            let imgWidth = 190;
+            let imgHeight = (canvas.height * imgWidth) / canvas.width;
+            let position = 10;
+
+            pdf.addImage(imgData, "PNG", 10, position, imgWidth, imgHeight);
+            pdf.save("Bill_Receipt_" + document.getElementById("billInvoice").innerText + ".pdf");
+        });
+    }
+</script>
+
+</body>
+</html>
