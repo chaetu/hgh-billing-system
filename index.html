@@ -10,123 +10,124 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
     <style>
-        /* Global Styles */
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            text-align: center;
-            background-color: #f4f4f4;
-        }
-
-        .container {
-            max-width: 600px;
-            background: #fff;
-            padding: 20px;
-            margin: auto;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        input, textarea {
-            width: 100%;
-            margin-bottom: 10px;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 16px;
-        }
-
-        button {
-            width: 100%;
-            padding: 12px;
-            font-size: 16px;
-            margin-top: 10px;
-            border: none;
-            cursor: pointer;
-            border-radius: 5px;
-            color: white;
-        }
-
-        button:first-of-type {
-            background-color: #28a745;
-        }
-
-        button:last-of-type {
-            background-color: #007bff;
-        }
-
-        button:hover {
-            opacity: 0.9;
-        }
-
-        /* Bill Section */
-        #bill {
-            background: #fff;
-            padding: 15px;
-            text-align: left;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            margin-top: 20px;
-        }
-
-        .header {
-            text-align: center;
-            font-size: 22px;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-
-        .subheader {
-            text-align: center;
-            font-size: 14px;
-            margin-bottom: 10px;
-        }
-
-        .section {
-            margin-bottom: 10px;
-            font-size: 16px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 10px;
-        }
-
-        th, td {
-            border: 1px solid #ccc;
-            padding: 10px;
-            text-align: center;
-            font-size: 16px;
-        }
-
-        .total {
-            text-align: right;
-            font-size: 18px;
-            font-weight: bold;
-            margin-top: 10px;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .container {
-                width: 90%;
-                padding: 15px;
-            }
-
-            input, textarea {
-                font-size: 14px;
-            }
-
-            table th, table td {
-                font-size: 14px;
-            }
-
-            button {
-                font-size: 14px;
-            }
-        }
+                /* Global Styles */
+                body {
+                    font-family: Arial, sans-serif;
+                    margin: 0;
+                    padding: 20px;
+                    text-align: center;
+                    background-color: #f4f4f4;
+                }
+        
+                .container {
+                    max-width: 600px;
+                    background: #fff;
+                    padding: 20px;
+                    margin: auto;
+                    border-radius: 8px;
+                    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                }
+        
+                input, textarea {
+                    width: 100%;
+                    margin-bottom: 10px;
+                    padding: 10px;
+                    border: 1px solid #ccc;
+                    border-radius: 5px;
+                    font-size: 16px;
+                }
+        
+                button {
+                    width: 100%;
+                    padding: 12px;
+                    font-size: 16px;
+                    margin-top: 10px;
+                    border: none;
+                    cursor: pointer;
+                    border-radius: 5px;
+                    color: white;
+                }
+        
+                button:first-of-type {
+                    background-color: #28a745;
+                }
+        
+                button:last-of-type {
+                    background-color: #007bff;
+                }
+        
+                button:hover {
+                    opacity: 0.9;
+                }
+        
+                /* Bill Section */
+                #bill {
+                    background: #fff;
+                    padding: 15px;
+                    text-align: left;
+                    border-radius: 8px;
+                    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                    margin-top: 20px;
+                }
+        
+                .header {
+                    text-align: center;
+                    font-size: 22px;
+                    font-weight: bold;
+                    margin-bottom: 10px;
+                }
+        
+                .subheader {
+                    text-align: center;
+                    font-size: 14px;
+                    margin-bottom: 10px;
+                }
+        
+                .section {
+                    margin-bottom: 10px;
+                    font-size: 16px;
+                }
+        
+                table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    margin-top: 10px;
+                }
+        
+                th, td {
+                    border: 1px solid #ccc;
+                    padding: 10px;
+                    text-align: center;
+                    font-size: 16px;
+                }
+        
+                .total {
+                    text-align: right;
+                    font-size: 18px;
+                    font-weight: bold;
+                    margin-top: 10px;
+                }
+        
+                /* Responsive Design */
+                @media (max-width: 768px) {
+                    .container {
+                        width: 90%;
+                        padding: 15px;
+                        height: 80vh;
+                    }
+        
+                    input, textarea {
+                        font-size: 14px;
+                    }
+        
+                    table th, table td {
+                        font-size: 14px;
+                    }
+        
+                    button {
+                        font-size: 14px;
+                    }
+                }
     </style>
 </head>
 <body>
@@ -184,7 +185,7 @@
 </div>
 
 <script>
-    let billCount = 1;
+    let billCount = 1; // Track daily bills
 
     function generateInvoiceNumber() {
         let today = new Date();
@@ -192,32 +193,43 @@
         let month = String(today.getMonth() + 1).padStart(2, '0');
         let date = String(today.getDate()).padStart(2, '0');
         let invoiceNumber = `${year}${month}${date}${String(billCount).padStart(2, '0')}`;
-        billCount++;
+        billCount++; // Increment for the next bill
         return invoiceNumber;
     }
 
     function calculateDays(startDate, endDate) {
         let start = new Date(startDate);
         let end = new Date(endDate);
-        let diffDays = Math.max(1, Math.ceil((end - start) / (1000 * 60 * 60 * 24)));
-        return diffDays;
+        let diffTime = end - start;
+        let diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); // Convert milliseconds to days
+        return diffDays > 0 ? diffDays : 1; // Minimum 1 day stay
     }
 
     function generateBill() {
         let startDate = document.getElementById("startDate").value;
         let endDate = document.getElementById("endDate").value;
         let customerName = document.getElementById("customerName").value;
+        let customerPhone = document.getElementById("customerPhone").value;
+        let customerAddress = document.getElementById("customerAddress").value;
+        let description = document.getElementById("description").value;
         let price = parseFloat(document.getElementById("price").value);
-        if (!startDate || !endDate || !customerName || isNaN(price) || price <= 0) {
+
+        if (!startDate || !endDate || !customerName || !customerPhone || !customerAddress || !description || isNaN(price) || price <= 0) {
             alert("Please fill all fields correctly.");
             return;
         }
 
         let days = calculateDays(startDate, endDate);
         let total = price * days;
+        let invoiceNumber = generateInvoiceNumber();
 
-        document.getElementById("billInvoice").innerText = generateInvoiceNumber();
+        document.getElementById("billInvoice").innerText = invoiceNumber;
         document.getElementById("billDates").innerText = `${startDate} to ${endDate}`;
+        document.getElementById("billCustomer").innerText = customerName;
+        document.getElementById("billCustomerPhone").innerText = customerPhone;
+        document.getElementById("billCustomerAddress").innerText = customerAddress;
+        document.getElementById("billDescription").innerText = description;
+        document.getElementById("billPrice").innerText = "₹" + price;
         document.getElementById("billDays").innerText = days;
         document.getElementById("billTotal").innerText = "₹" + total;
         document.getElementById("billGrandTotal").innerText = total;
@@ -225,10 +237,17 @@
 
     function downloadPDF() {
         const { jsPDF } = window.jspdf;
-        html2canvas(document.getElementById("bill")).then(canvas => {
-            let pdf = new jsPDF();
-            pdf.addImage(canvas.toDataURL("image/png"), "PNG", 10, 10, 180, 0);
-            pdf.save("Bill_" + document.getElementById("billInvoice").innerText + ".pdf");
+        let element = document.getElementById("bill");
+
+        html2canvas(element, { scale: 2 }).then(canvas => {
+            let imgData = canvas.toDataURL("image/png");
+            let pdf = new jsPDF("p", "mm", "a4");
+            let imgWidth = 190;
+            let imgHeight = (canvas.height * imgWidth) / canvas.width;
+            let position = 10;
+
+            pdf.addImage(imgData, "PNG", 10, position, imgWidth, imgHeight);
+            pdf.save("Bill_Receipt_" + document.getElementById("billInvoice").innerText + ".pdf");
         });
     }
 </script>
